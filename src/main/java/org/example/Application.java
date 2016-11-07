@@ -1,28 +1,24 @@
 package org.example;
 
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.AbstractHandler;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import javax.servlet.ServletException;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.handler.AbstractHandler;
 
-public class Application extends AbstractHandler{
-
+public class Application extends AbstractHandler
+{
     private static final int PAGE_SIZE = 3000;
     private static final String INDEX_HTML = loadIndex();
 
-    public static int getPort() {
-        try {
-            return Integer.parseInt(System.getenv().get("PORT"));
-        } catch (Exception e) {
-            return 8080;
-        }
-    }
     private static String loadIndex() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Application.class.getResourceAsStream("/index.html")))) {
             final StringBuilder page = new StringBuilder(PAGE_SIZE);
@@ -46,10 +42,10 @@ public class Application extends AbstractHandler{
         return stringWriter.getBuffer().toString();
     }
 
-    public static void main(String[] args) throws Exception {
-        ServerInjector temp = new ServerInjector(new Server(getPort()), new Application());
-        temp.start();
+    public static int getPort() {
+        return Integer.parseInt(System.getenv().get("PORT"));
     }
+
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         response.setContentType("text/html;charset=utf-8");
@@ -57,5 +53,12 @@ public class Application extends AbstractHandler{
         baseRequest.setHandled(true);
         response.getWriter().println(INDEX_HTML);
     }
-}
 
+    public static void main(String[] args) throws Exception
+    {
+        Server server = new Server(getPort());
+        server.setHandler(new Application());
+        server.start();
+        server.join();
+    }
+}
