@@ -9,13 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
-import static org.example.MainEntryPoint.getPort;
+
 
 public class Application extends AbstractHandler{
 
     private static final int PAGE_SIZE = 3000;
     private static final String INDEX_HTML = loadIndex();
 
+    public static int getPort() {
+        try {
+            return Integer.parseInt(System.getenv().get("PORT"));
+        } catch (Exception e) {
+            return 8080;
+        }
+    }
     private static String loadIndex() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Application.class.getResourceAsStream("/index.html")))) {
             final StringBuilder page = new StringBuilder(PAGE_SIZE);
@@ -40,7 +47,7 @@ public class Application extends AbstractHandler{
     }
 
     public static void main(String[] args) throws Exception {
-        ServerInjector temp = new ServerInjector(new Server(getPort()), new MainEntryPoint());
+        ServerInjector temp = new ServerInjector(new Server(getPort()), new Application());
         temp.start();
     }
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
