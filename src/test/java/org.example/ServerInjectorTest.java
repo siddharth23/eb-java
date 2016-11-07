@@ -11,7 +11,7 @@ public class ServerInjectorTest {
     @Test(expected = Exception.class)
     public void mainTest() throws Exception {
         Server mockServer = mock(Server.class);
-        Application mockApplication = mock(Application.class);
+        MainEntryPoint mockApplication = mock(MainEntryPoint.class);
         ServerInjector temp = new ServerInjector(mockServer, mockApplication);
         temp.start();
 

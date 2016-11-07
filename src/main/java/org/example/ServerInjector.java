@@ -4,9 +4,9 @@ import org.eclipse.jetty.server.Server;
 
 public class ServerInjector {
     public final Server server;
-    public final Application application;
+    public final MainEntryPoint application;
 
-    public ServerInjector(Server server, Application application){
+    public ServerInjector(Server server, MainEntryPoint application){
         this.server = server;
         this.application = application;
     }
