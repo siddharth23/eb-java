@@ -1,4 +1,4 @@
-package org.example;
+package org.example.test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
