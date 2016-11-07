@@ -1,9 +1,11 @@
 package org.example;
 
+import junit.framework.Assert;
 import org.eclipse.jetty.server.Server;
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ApplicationTest {
 
@@ -12,7 +14,8 @@ public class ApplicationTest {
     public void mainTest()  {
 
         Application mockApplication = mock(Application.class);
-        mockApplication.getPort();
+        when(mockApplication.getPort()).thenReturn(8080);
+        Assert.assertEquals(mockApplication.getPort(),8080);
 
     }
 }
